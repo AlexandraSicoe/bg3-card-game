@@ -2,10 +2,21 @@ import { Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import imageData from "../helpers/cards.json";
+import { useState, useEffect } from "react";
+
 function CardGame() {
-  const shuffledData = [...imageData.cards, ...imageData.cards].sort(
-    () => 0.5 - Math.random()
-  );
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [shuffledData, setShuffledData] = useState([]);
+  const handleCardClick = (id) => {
+    setSelectedCards((prevSelectedCards) => ({
+      ...prevSelectedCards,
+      [id]: !prevSelectedCards[id],
+    }));
+  };
+
+  useEffect(() => {
+    setShuffledData(imageData.cards.slice());
+  }, []);
   return (
     <>
       <Grid
@@ -52,8 +63,13 @@ function CardGame() {
             alignItems: "center",
           }}
         >
-          {shuffledData.map((cardData, index) => (
-            <CardComponent key={index} cardData={cardData} />
+          {shuffledData.map((cardData) => (
+            <CardComponent
+              key={cardData.id}
+              cardData={cardData}
+              isSelected={selectedCards[cardData.id]}
+              onClick={() => handleCardClick(cardData.id)}
+            />
           ))}
         </Grid>
       </Grid>
