@@ -1,22 +1,51 @@
+import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import imageData from "../helpers/cards.json";
-import { useState, useEffect } from "react";
+import _ from "lodash";
 
 function CardGame() {
-  const [selectedCards, setSelectedCards] = useState([]);
   const [shuffledData, setShuffledData] = useState([]);
-  const handleCardClick = (id) => {
-    setSelectedCards((prevSelectedCards) => ({
-      ...prevSelectedCards,
-      [id]: !prevSelectedCards[id],
-    }));
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [enableCardClick, setEnableCardClick] = useState(true);
+
+  const handleCardClick = (index, id) => {
+    if (selectedCards[index] == true) {
+      return;
+    }
+    if (enableCardClick == false) {
+      return;
+    }
+    const clonedSelectedCards = _.cloneDeep(selectedCards);
+    clonedSelectedCards[index] = !clonedSelectedCards[index];
+    setSelectedCards(clonedSelectedCards);
   };
 
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
   useEffect(() => {
-    setShuffledData(imageData.cards.slice());
+    let sum = 0;
+    selectedCards.forEach((element) => {
+      console.log(element);
+      sum = sum + Boolean(element);
+    });
+    console.log(sum);
+    if (sum % 2 == 0 && sum != 0) {
+      setEnableCardClick(false);
+    }
+  }, [selectedCards]);
+
+  useEffect(() => {
+    let pairedCards = imageData.cards.concat(imageData.cards);
+    shuffleArray(pairedCards);
+    setShuffledData(pairedCards);
   }, []);
+
   return (
     <>
       <Grid
@@ -63,12 +92,12 @@ function CardGame() {
             alignItems: "center",
           }}
         >
-          {shuffledData.map((cardData) => (
+          {shuffledData.map((cardData, index) => (
             <CardComponent
-              key={cardData.id}
+              key={index}
               cardData={cardData}
-              isSelected={selectedCards[cardData.id]}
-              onClick={() => handleCardClick(cardData.id)}
+              isSelected={selectedCards[index]}
+              onClick={() => handleCardClick(index, cardData.id)}
             />
           ))}
         </Grid>

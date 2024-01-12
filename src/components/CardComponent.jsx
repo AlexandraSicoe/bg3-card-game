@@ -5,7 +5,7 @@ import Typography from "@mui/joy/Typography";
 import React, { useEffect, useState } from "react";
 
 function CardComponent({ cardData, isSelected, onClick }) {
-  const { id, imageUrl } = cardData;
+  const { id, imageUrl, disabled } = cardData;
   const defaultImageUrl =
     "https://m.media-amazon.com/images/M/MV5BMWVlMDdhNzYtNDY5ZS00YzdiLWI3NWEtMDUzMGQyMWQ2NDY3XkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_FMjpg_UX1000_.jpg";
 
@@ -15,10 +15,9 @@ function CardComponent({ cardData, isSelected, onClick }) {
         minHeight: "280px",
         width: 200,
         marginRight: "15px",
-        backgroundColor: isSelected ? "gray" : "white",
         cursor: "pointer",
       }}
-      onClick={onClick}
+      onClick={!disabled && onClick}
     >
       <CardCover>
         {isSelected ? (
