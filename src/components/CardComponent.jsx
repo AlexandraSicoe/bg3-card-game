@@ -12,8 +12,8 @@ function CardComponent({ cardData, isSelected, onClick }) {
   return (
     <Card
       sx={{
-        minHeight: "280px",
-        width: 200,
+        minHeight: { xs: "210px", sm: "280px" },
+        width: { xs: "150px", sm: "200px" },
         marginRight: "15px",
         cursor: "pointer",
       }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/joy";
+import { Box, Button, Container, Grid, Input, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import imageData from "../helpers/cards.json";
@@ -9,6 +9,8 @@ function CardGame() {
   const [shuffledData, setShuffledData] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [enableCardClick, setEnableCardClick] = useState(true);
+  const [loginInput, setLoginInput] = useState("");
+  const [gameState, setGameState] = useState(0);
 
   const handleCardClick = (index, id) => {
     if (selectedCards[index] == true) {
@@ -41,6 +43,8 @@ function CardGame() {
   }, [selectedCards]);
 
   useEffect(() => {
+    setLoginInput(localStorage.getItem("username"));
+
     let pairedCards = imageData.cards.concat(imageData.cards);
     shuffleArray(pairedCards);
     setShuffledData(pairedCards);
@@ -48,60 +52,105 @@ function CardGame() {
 
   return (
     <>
-      <Grid
+      <Box
         sx={{
           background: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),  url(${BackgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "start",
-          alignItems: "center",
+          minHeight: "100vh",
           filter: "brightness(0.8)",
+          width: "100%",
         }}
       >
-        <Grid
-          sx={{
-            paddingTop: "20px",
-          }}
-        >
-          <Typography level="h1" sx={{ color: "white" }}>
-            Welcome to the Card-Matching Adventure in the Shadows of Baldur's
-            Gate:
-          </Typography>
-          <Typography level="h3" sx={{ color: "white" }}>
-            Embark on a journey through the arcane streets of this enigmatic
-            city as you uncover pairs of symbols that hold the key to its
-            magical mysteries.
-          </Typography>
-          <Typography level="body-md" sx={{ color: "white" }}>
-            Created with love by Lex. - Inspired by classic memory games and a
-            passion for Baldurs Gate 3, this project aims to provide a
-            delightful gaming experience for all ages.
-          </Typography>
-          <Typography level="body-md" sx={{ color: "white" }}>
-            Ready to test your memory?
-          </Typography>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "start",
-            alignItems: "center",
-          }}
-        >
-          {shuffledData.map((cardData, index) => (
-            <CardComponent
-              key={index}
-              cardData={cardData}
-              isSelected={selectedCards[index]}
-              onClick={() => handleCardClick(index, cardData.id)}
-            />
-          ))}
-        </Grid>
-      </Grid>
+        {gameState == 0 && (
+          <Box id="loginComponent">
+            <Container maxWidth="md">
+              <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Typography level="h3" sx={{ color: "white" }}>
+                  Welcome to the Card-Matching Adventure in the Shadows of
+                  Baldur's Gate:
+                </Typography>
+                <Typography level="h2" sx={{ color: "white" }}>
+                  Enter your name:
+                </Typography>
+                <Input
+                  size="lg"
+                  value={loginInput}
+                  onChange={(e) => {
+                    localStorage.setItem("username", e.target.value);
+                    setLoginInput(e.target.value);
+                  }}
+                ></Input>
+                <Button
+                  color="success"
+                  size="lg"
+                  sx={{ mt: 1 }}
+                  onClick={() => {
+                    if (loginInput.length > 0) {
+                      setGameState(1);
+                    }
+                  }}
+                >
+                  Start
+                </Button>
+              </Grid>
+            </Container>
+          </Box>
+        )}
+
+        {gameState == 1 && (
+          <Box id="gameComponent">
+            <Grid p={3}>
+              <Typography level="h1" sx={{ color: "white" }}>
+                Welcome to the Card-Matching Adventure in the Shadows of
+                Baldur's Gate:
+              </Typography>
+              <Typography level="h3" sx={{ color: "white" }}>
+                Embark on a journey through the arcane streets of this enigmatic
+                city as you uncover pairs of symbols that hold the key to its
+                magical mysteries.
+              </Typography>
+              <Typography level="body-md" sx={{ color: "white" }}>
+                Created with love by Lex. - Inspired by classic memory games and
+                a passion for Baldurs Gate 3, this project aims to provide a
+                delightful gaming experience for all ages.
+              </Typography>
+              <Typography level="body-md" sx={{ color: "white" }}>
+                Ready to test your memory?
+              </Typography>
+            </Grid>
+            <Grid p={3} container>
+              {shuffledData.map((cardData, index) => (
+                <Grid
+                  item
+                  xs={6}
+                  sm={4}
+                  md={3}
+                  lg={2}
+                  mt={2}
+                  // sx={{ width: "100%" }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <CardComponent
+                    cardData={cardData}
+                    isSelected={selectedCards[index]}
+                    onClick={() => handleCardClick(index, cardData.id)}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
+      </Box>
     </>
   );
 }
