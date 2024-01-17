@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Container, Grid, Input, Typography } from "@mui/joy";
+import { Box, Button, Container, Grid, Typography } from "@mui/joy";
+import Input from "@mui/joy/Input";
+
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import imageData from "../helpers/cards.json";
+import Logo from "../images/logo.png";
 import _ from "lodash";
 
 function CardGame() {
@@ -53,12 +56,13 @@ function CardGame() {
   return (
     <>
       <Box
+        display="flex"
+        flexDirection="column"
         sx={{
           background: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),  url(${BackgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           minHeight: "100vh",
-          filter: "brightness(0.8)",
           width: "100%",
         }}
       >
@@ -66,38 +70,89 @@ function CardGame() {
           <Box id="loginComponent">
             <Container maxWidth="md">
               <Grid
-                container
-                direction="column"
-                justifyContent="center"
+                display="flex"
+                flexDirection="column"
                 alignItems="center"
+                justifyContent="center"
+                sx={{
+                  height: "100vh",
+                }}
               >
-                <Typography level="h3" sx={{ color: "white" }}>
-                  Welcome to the Card-Matching Adventure in the Shadows of
-                  Baldur's Gate:
-                </Typography>
-                <Typography level="h2" sx={{ color: "white" }}>
-                  Enter your name:
-                </Typography>
-                <Input
-                  size="lg"
-                  value={loginInput}
-                  onChange={(e) => {
-                    localStorage.setItem("username", e.target.value);
-                    setLoginInput(e.target.value);
+                <img
+                  src={Logo}
+                  alt="Logo"
+                  style={{
+                    height: "300px",
+                    marginRight: { xs: "0px", md: "15px" },
                   }}
-                ></Input>
-                <Button
-                  color="success"
-                  size="lg"
-                  sx={{ mt: 1 }}
-                  onClick={() => {
-                    if (loginInput.length > 0) {
-                      setGameState(1);
-                    }
+                />
+                <Typography
+                  level="h1"
+                  textAlign="center"
+                  sx={{
+                    background:
+                      "-webkit-linear-gradient( 67deg,rgba(253, 236, 219, 1), #FBCEA0)",
+                    // backgroundImage:
+                    //   "linear-gradient(67deg, rgba(2,0,36,1) 0%, rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)",
+                    fontSize: "28px",
+
+                    // background: `linear-gradient(67deg,  rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)`,
+                    display: "inline-block",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontFamily: "BreatheFireFont",
+                    letterSpacing: "2px",
                   }}
                 >
-                  Start
-                </Button>
+                  Welcome to the Card-Matching Adventure in the Shadows of
+                  Baldur's Gate
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "80%",
+                    mt: "10px",
+                  }}
+                >
+                  <Typography
+                    level="h2"
+                    sx={{ color: "white", fontFamily: "Quadrat" }}
+                  >
+                    Enter your name:
+                  </Typography>
+                  <Input
+                    variant="outlined"
+                    color="neutral"
+                    size="md"
+                    value={loginInput}
+                    onChange={(e) => {
+                      localStorage.setItem("username", e.target.value);
+                      setLoginInput(e.target.value);
+                    }}
+                  ></Input>
+                  <div>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "white",
+                        fontFamily: "Quadrat",
+                        fontSize: "20px",
+                      }}
+                      color="success"
+                      size="md"
+                      onClick={() => {
+                        if (loginInput.length > 0) {
+                          setGameState(1);
+                        }
+                      }}
+                    >
+                      Start
+                    </Button>
+                  </div>
+                </Box>
               </Grid>
             </Container>
           </Box>
@@ -105,24 +160,61 @@ function CardGame() {
 
         {gameState == 1 && (
           <Box id="gameComponent">
-            <Grid p={3}>
-              <Typography level="h1" sx={{ color: "white" }}>
-                Welcome to the Card-Matching Adventure in the Shadows of
-                Baldur's Gate:
-              </Typography>
-              <Typography level="h3" sx={{ color: "white" }}>
-                Embark on a journey through the arcane streets of this enigmatic
-                city as you uncover pairs of symbols that hold the key to its
-                magical mysteries.
-              </Typography>
-              <Typography level="body-md" sx={{ color: "white" }}>
-                Created with love by Lex. - Inspired by classic memory games and
-                a passion for Baldurs Gate 3, this project aims to provide a
-                delightful gaming experience for all ages.
-              </Typography>
-              <Typography level="body-md" sx={{ color: "white" }}>
-                Ready to test your memory?
-              </Typography>
+            <Grid
+              py={2}
+              px={3}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  location.reload();
+                }}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p={1}
+              >
+                <img
+                  src={Logo}
+                  alt="Logo"
+                  style={{
+                    height: "200px",
+                  }}
+                />
+              </Box>
+
+              <Box sx={{ marginLeft: { xs: "0px", md: "40px" } }}>
+                <Typography
+                  level="h1"
+                  sx={{
+                    background:
+                      "-webkit-linear-gradient( left,#FDECDB, #FBCEA0)",
+                    backgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  Welcome to the Card-Matching Adventure in the Shadows of
+                  Baldur's Gate:
+                </Typography>
+                <Typography level="h4" sx={{ color: "white" }}>
+                  Embark on a journey through the arcane streets of this
+                  enigmatic city as you uncover pairs of symbols that hold the
+                  key to its magical mysteries.
+                </Typography>
+
+                <Typography
+                  level="h3"
+                  sx={{ color: "white", paddingTop: "10px" }}
+                >
+                  Ready to test your memory?
+                </Typography>
+              </Box>
             </Grid>
             <Grid p={3} container>
               {shuffledData.map((cardData, index) => (
@@ -133,7 +225,6 @@ function CardGame() {
                   md={3}
                   lg={2}
                   mt={2}
-                  // sx={{ width: "100%" }}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -150,6 +241,35 @@ function CardGame() {
             </Grid>
           </Box>
         )}
+        <Grid
+          container
+          sx={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            width: "100%",
+            justifyContent: "flex-end",
+            position: "relative",
+            mt: "auto",
+            minHeight: "100px",
+            p: 2,
+          }}
+        >
+          <Typography
+            level="body-md"
+            sx={{
+              color: "white",
+              textAlign: "center",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "100%",
+            }}
+          >
+            © 2024 Inspired by classic memory games and a passion for Baldurs
+            Gate 3, this project aims to provide a delightful gaming experience
+            for all ages. - Created with love by Lex.
+          </Typography>
+        </Grid>
       </Box>
     </>
   );

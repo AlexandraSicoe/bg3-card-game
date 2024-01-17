@@ -3,3 +3,13 @@
   padding: 0px;
   box-sizing: border-box;
 }
+@font-face {
+  font-family: "BreatheFireFont";
+  src: url("./assets/BreatheFireFont/Breathe Fire.otf") format("opentype");
+  /* Add other font-face properties as needed */
+}
+@font-face {
+  font-family: "Quadrat";
+  src: url("./assets/Quadrat/Quadrat-demibold.ttf") format("opentype");
+  /* Add other font-face properties as needed */
+}

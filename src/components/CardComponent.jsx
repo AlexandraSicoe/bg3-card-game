@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 function CardComponent({ cardData, isSelected, onClick }) {
   const { id, imageUrl, disabled } = cardData;
   const defaultImageUrl =
-    "https://m.media-amazon.com/images/M/MV5BMWVlMDdhNzYtNDY5ZS00YzdiLWI3NWEtMDUzMGQyMWQ2NDY3XkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_FMjpg_UX1000_.jpg";
+    "https://assets.mycast.io/posters/baldur-s-gate-3-fan-casting-poster-389892-large.jpg?1697159724";
 
   return (
     <Card
