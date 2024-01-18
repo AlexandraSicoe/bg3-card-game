@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Container, Grid, Typography } from "@mui/joy";
-import Input from "@mui/joy/Input";
-
+import { Box, Container, Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import imageData from "../helpers/cards.json";
+import GrayLogo from "../images/logo2.png";
 import Logo from "../images/logo.png";
+
 import _ from "lodash";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 function CardGame() {
   const [shuffledData, setShuffledData] = useState([]);
@@ -78,30 +80,43 @@ function CardGame() {
                   height: "100vh",
                 }}
               >
-                <img
-                  src={Logo}
-                  alt="Logo"
-                  style={{
-                    height: "300px",
-                    marginRight: { xs: "0px", md: "15px" },
+                <Box
+                  sx={{
+                    transition: "transform 0.4s ease, color 0.3s ease",
+                    cursor: "pointer",
+                    "&:hover": {
+                      transform: "scale(1.2)",
+                    },
                   }}
-                />
+                >
+                  <img
+                    src={GrayLogo}
+                    alt="Logo"
+                    style={{
+                      height: "300px",
+                      // marginRight: { xs: "0px", md: "15px" },
+                    }}
+                  />
+                </Box>
+
                 <Typography
                   level="h1"
                   textAlign="center"
                   sx={{
-                    background:
-                      "-webkit-linear-gradient( 67deg,rgba(253, 236, 219, 1), #FBCEA0)",
-                    // backgroundImage:
-                    //   "linear-gradient(67deg, rgba(2,0,36,1) 0%, rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)",
+                    // background:
+                    //   "-webkit-linear-gradient( 67deg,rgba(253, 236, 219, 1), #FBCEA0)",
+                    // // backgroundImage:
+                    // //   "linear-gradient(67deg, rgba(2,0,36,1) 0%, rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)",
+                    color: "white",
                     fontSize: "28px",
 
                     // background: `linear-gradient(67deg,  rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)`,
                     display: "inline-block",
-                    backgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                    // backgroundClip: "text",
+                    // WebkitTextFillColor: "transparent",
                     fontFamily: "BreatheFireFont",
                     letterSpacing: "2px",
+                    mt: "20px",
                   }}
                 >
                   Welcome to the Card-Matching Adventure in the Shadows of
@@ -111,7 +126,7 @@ function CardGame() {
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                     alignItems: "center",
                     width: "80%",
                     mt: "10px",
@@ -123,25 +138,36 @@ function CardGame() {
                   >
                     Enter your name:
                   </Typography>
-                  <Input
-                    variant="outlined"
-                    color="neutral"
-                    size="md"
+                  <TextField
+                    sx={{
+                      "& .MuiInput-underline": {
+                        color: "white",
+                        fontFamily: "Quadrat",
+                        marginLeft: "20px",
+                        marginRight: "20px",
+                      },
+                    }}
+                    id="standard-basic"
+                    variant="standard"
+                    color="success"
+                    focused
                     value={loginInput}
                     onChange={(e) => {
                       localStorage.setItem("username", e.target.value);
                       setLoginInput(e.target.value);
                     }}
-                  ></Input>
+                  ></TextField>
                   <div>
                     <Button
-                      variant="outlined"
                       sx={{
                         color: "white",
                         fontFamily: "Quadrat",
                         fontSize: "20px",
+                        "& .MuiInput-underline": {
+                          color: "white",
+                          fontFamily: "Quadrat",
+                        },
                       }}
-                      color="success"
                       size="md"
                       onClick={() => {
                         if (loginInput.length > 0) {

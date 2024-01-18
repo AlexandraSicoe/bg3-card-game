@@ -13,3 +13,7 @@
   src: url("./assets/Quadrat/Quadrat-demibold.ttf") format("opentype");
   /* Add other font-face properties as needed */
 }
+
+.MuiInputBase-root::after {
+  border-color: #edeade !important;
+}
