@@ -94,7 +94,6 @@ function CardGame() {
                     alt="Logo"
                     style={{
                       height: "300px",
-                      // marginRight: { xs: "0px", md: "15px" },
                     }}
                   />
                 </Box>
@@ -103,17 +102,9 @@ function CardGame() {
                   level="h1"
                   textAlign="center"
                   sx={{
-                    // background:
-                    //   "-webkit-linear-gradient( 67deg,rgba(253, 236, 219, 1), #FBCEA0)",
-                    // // backgroundImage:
-                    // //   "linear-gradient(67deg, rgba(2,0,36,1) 0%, rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)",
                     color: "white",
                     fontSize: "28px",
-
-                    // background: `linear-gradient(67deg,  rgba(255, 197, 71,1) 0%, rgba(90, 59, 0,1) 98%)`,
                     display: "inline-block",
-                    // backgroundClip: "text",
-                    // WebkitTextFillColor: "transparent",
                     fontFamily: "BreatheFireFont",
                     letterSpacing: "2px",
                     mt: "20px",
@@ -164,8 +155,11 @@ function CardGame() {
                         fontFamily: "Quadrat",
                         fontSize: "20px",
                         "& .MuiInput-underline": {
-                          color: "white",
                           fontFamily: "Quadrat",
+                        },
+                        transition: "transform 0.4s ease, color 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.3)",
                         },
                       }}
                       size="md"
