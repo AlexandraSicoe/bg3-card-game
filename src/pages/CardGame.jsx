@@ -16,6 +16,8 @@ function CardGame() {
   const [enableCardClick, setEnableCardClick] = useState(true);
   const [loginInput, setLoginInput] = useState("");
   const [gameState, setGameState] = useState(0);
+  const [historyCardClick, setHistoryCardClick] = useState([]);
+  const [score, setScore] = useState(0);
 
   const handleCardClick = (index, id) => {
     if (selectedCards[index] == true) {
@@ -24,11 +26,16 @@ function CardGame() {
     if (enableCardClick == false) {
       return;
     }
+    const clonedHistoryCardClick = _.cloneDeep(historyCardClick);
+    clonedHistoryCardClick.push({ index, id });
+    setHistoryCardClick(clonedHistoryCardClick);
+
     const clonedSelectedCards = _.cloneDeep(selectedCards);
     clonedSelectedCards[index] = !clonedSelectedCards[index];
     setSelectedCards(clonedSelectedCards);
   };
 
+  console.log(shuffledData);
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -45,10 +52,36 @@ function CardGame() {
     if (sum % 2 == 0 && sum != 0) {
       setEnableCardClick(false);
     }
+
+    if (selectedCards.length > 1)
+      setTimeout(() => {
+        console.log(historyCardClick);
+        if (
+          historyCardClick[historyCardClick.length - 1].id ===
+          historyCardClick[historyCardClick.length - 2].id
+        ) {
+          setScore(score + 1);
+        } else {
+          setScore(score - 1);
+          const clonedSelectedCards = _.cloneDeep(selectedCards);
+          clonedSelectedCards[
+            historyCardClick[historyCardClick.length - 1].index
+          ] = false;
+          clonedSelectedCards[
+            historyCardClick[historyCardClick.length - 2].index
+          ] = false;
+          setSelectedCards(clonedSelectedCards);
+        }
+        setEnableCardClick(true);
+      }, 2000);
   }, [selectedCards]);
 
   useEffect(() => {
-    setLoginInput(localStorage.getItem("username"));
+    const lsUserName = localStorage.getItem("username");
+    setLoginInput(lsUserName);
+    if (lsUserName) {
+      setGameState(1);
+    }
 
     let pairedCards = imageData.cards.concat(imageData.cards);
     shuffleArray(pairedCards);
@@ -146,6 +179,13 @@ function CardGame() {
                     onChange={(e) => {
                       localStorage.setItem("username", e.target.value);
                       setLoginInput(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key == "Enter") {
+                        if (loginInput.length > 0) {
+                          setGameState(1);
+                        }
+                      }
                     }}
                   ></TextField>
                   <div>
