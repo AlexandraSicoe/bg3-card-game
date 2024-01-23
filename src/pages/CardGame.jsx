@@ -35,7 +35,6 @@ function CardGame() {
     setSelectedCards(clonedSelectedCards);
   };
 
-  console.log(shuffledData);
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -45,23 +44,24 @@ function CardGame() {
   useEffect(() => {
     let sum = 0;
     selectedCards.forEach((element) => {
-      console.log(element);
-      sum = sum + Boolean(element);
+      sum = element + sum;
     });
-    console.log(sum);
-    if (sum % 2 == 0 && sum != 0) {
-      setEnableCardClick(false);
-    }
-
-    if (selectedCards.length > 1)
+    if (sum == selectedCards.length && selectedCards.length > 0) {
       setTimeout(() => {
-        console.log(historyCardClick);
-        if (
-          historyCardClick[historyCardClick.length - 1].id ===
-          historyCardClick[historyCardClick.length - 2].id
-        ) {
-          setScore(score + 1);
-        } else {
+        setGameState(3);
+      }, 1000);
+    }
+    if (historyCardClick.length >= 2) {
+      setEnableCardClick(false);
+      if (
+        historyCardClick[historyCardClick.length - 1].id ===
+        historyCardClick[historyCardClick.length - 2].id
+      ) {
+        setScore(score + 1);
+        setHistoryCardClick([]);
+        setEnableCardClick(true);
+      } else {
+        setTimeout(() => {
           setScore(score - 1);
           const clonedSelectedCards = _.cloneDeep(selectedCards);
           clonedSelectedCards[
@@ -71,9 +71,12 @@ function CardGame() {
             historyCardClick[historyCardClick.length - 2].index
           ] = false;
           setSelectedCards(clonedSelectedCards);
-        }
-        setEnableCardClick(true);
-      }, 2000);
+
+          setHistoryCardClick([]);
+          setEnableCardClick(true);
+        }, 500);
+      }
+    }
   }, [selectedCards]);
 
   useEffect(() => {
@@ -86,6 +89,12 @@ function CardGame() {
     let pairedCards = imageData.cards.concat(imageData.cards);
     shuffleArray(pairedCards);
     setShuffledData(pairedCards);
+
+    const clonedSelectedCards = [];
+    pairedCards.forEach(() => {
+      clonedSelectedCards.push(false);
+    });
+    setSelectedCards(clonedSelectedCards);
   }, []);
 
   return (
@@ -219,88 +228,172 @@ function CardGame() {
         )}
 
         {gameState == 1 && (
-          <Box id="gameComponent">
+          <>
+            <Box id="gameComponent">
+              <Grid
+                py={2}
+                px={3}
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => {
+                    location.reload();
+                  }}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  p={1}
+                >
+                  <img
+                    src={Logo}
+                    alt="Logo"
+                    style={{
+                      height: "200px",
+                    }}
+                  />
+                </Box>
+
+                <Box sx={{ marginLeft: { xs: "0px", md: "40px" } }}>
+                  <Typography
+                    level="h1"
+                    sx={{
+                      background:
+                        "-webkit-linear-gradient( left,#FDECDB, #FBCEA0)",
+                      backgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    Welcome to the Card-Matching Adventure in the Shadows of
+                    Baldur's Gate:
+                  </Typography>
+                  <Typography level="h4" sx={{ color: "white" }}>
+                    Embark on a journey through the arcane streets of this
+                    enigmatic city as you uncover pairs of symbols that hold the
+                    key to its magical mysteries.
+                  </Typography>
+
+                  <Typography
+                    level="h3"
+                    sx={{ color: "white", paddingTop: "10px" }}
+                  >
+                    Ready to test your memory?
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid p={3} container>
+                {shuffledData.map((cardData, index) => (
+                  <Grid
+                    item
+                    xs={6}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    mt={2}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CardComponent
+                      cardData={cardData}
+                      isSelected={selectedCards[index]}
+                      onClick={() => handleCardClick(index, cardData.id)}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                sx={{
+                  marginTop: "20px",
+                  cursor: "pointer",
+                  color: "white",
+                  fontFamily: "Quadrat",
+                  fontSize: "20px",
+                  overflow: "hidden",
+                  boxSizing: "border-box",
+                  "& .MuiInput-underline": {
+                    fontFamily: "Quadrat",
+                  },
+                  transition: "transform 0.4s ease, color 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                  },
+                }}
+                size="md"
+              >
+                Change difficulty
+              </Button>
+            </Box>
+          </>
+        )}
+        {gameState == 3 && (
+          <Box
+            id="gameOverComponent"
+            sx={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "100%",
+              textAlign: "center",
+            }}
+          >
             <Grid
               py={2}
               px={3}
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
             >
-              <Box
-                sx={{ cursor: "pointer" }}
+              <Typography
+                level="h3"
+                sx={{ color: "white", textAlign: "center" }}
+              >
+                Congratulations on completing the game!
+              </Typography>
+              <Button
                 onClick={() => {
                   location.reload();
                 }}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                p={1}
+                sx={{
+                  marginTop: "20px",
+                  cursor: "pointer",
+                  color: "white",
+                  fontFamily: "Quadrat",
+                  fontSize: "20px",
+                  "& .MuiInput-underline": {
+                    fontFamily: "Quadrat",
+                  },
+                  transition: "transform 0.4s ease, color 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                  },
+                }}
+                size="md"
               >
-                <img
-                  src={Logo}
-                  alt="Logo"
-                  style={{
-                    height: "200px",
-                  }}
-                />
-              </Box>
-
-              <Box sx={{ marginLeft: { xs: "0px", md: "40px" } }}>
-                <Typography
-                  level="h1"
-                  sx={{
-                    background:
-                      "-webkit-linear-gradient( left,#FDECDB, #FBCEA0)",
-                    backgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  Welcome to the Card-Matching Adventure in the Shadows of
-                  Baldur's Gate:
-                </Typography>
-                <Typography level="h4" sx={{ color: "white" }}>
-                  Embark on a journey through the arcane streets of this
-                  enigmatic city as you uncover pairs of symbols that hold the
-                  key to its magical mysteries.
-                </Typography>
-
-                <Typography
-                  level="h3"
-                  sx={{ color: "white", paddingTop: "10px" }}
-                >
-                  Ready to test your memory?
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid p={3} container>
-              {shuffledData.map((cardData, index) => (
-                <Grid
-                  item
-                  xs={6}
-                  sm={4}
-                  md={3}
-                  lg={2}
-                  mt={2}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <CardComponent
-                    cardData={cardData}
-                    isSelected={selectedCards[index]}
-                    onClick={() => handleCardClick(index, cardData.id)}
-                  />
-                </Grid>
-              ))}
+                Replay level
+              </Button>
             </Grid>
           </Box>
         )}
+
         <Grid
           container
           sx={{
