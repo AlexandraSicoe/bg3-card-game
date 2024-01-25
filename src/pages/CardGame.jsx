@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Container, Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
+import ChooseDifficulty from "../components/ChooseDifficulty";
+
 import imageData from "../helpers/cards.json";
 import GrayLogo from "../images/logo2.png";
 import Logo from "../images/logo.png";
@@ -48,7 +50,7 @@ function CardGame() {
     });
     if (sum == selectedCards.length && selectedCards.length > 0) {
       setTimeout(() => {
-        setGameState(3);
+        setGameState(2);
       }, 1000);
     }
     if (historyCardClick.length >= 2) {
@@ -336,13 +338,16 @@ function CardGame() {
                   },
                 }}
                 size="md"
+                onClick={() => {
+                  setGameState(3);
+                }}
               >
                 Change difficulty
               </Button>
             </Box>
           </>
         )}
-        {gameState == 3 && (
+        {gameState == 2 && (
           <Box
             id="gameOverComponent"
             sx={{
@@ -368,6 +373,12 @@ function CardGame() {
               >
                 Congratulations on completing the game!
               </Typography>
+              <Typography
+                level="h4"
+                sx={{ color: "white", textAlign: "center" }}
+              >
+                Your score is: {score} !
+              </Typography>
               <Button
                 onClick={() => {
                   location.reload();
@@ -390,10 +401,32 @@ function CardGame() {
               >
                 Replay level
               </Button>
+              <Button
+                onClick={() => {
+                  setGameState(3);
+                }}
+                sx={{
+                  marginTop: "20px",
+                  cursor: "pointer",
+                  color: "white",
+                  fontFamily: "Quadrat",
+                  fontSize: "20px",
+                  "& .MuiInput-underline": {
+                    fontFamily: "Quadrat",
+                  },
+                  transition: "transform 0.4s ease, color 0.3s ease",
+                  "&:hover": {
+                    transform: "scale(1.3)",
+                  },
+                }}
+                size="md"
+              >
+                Start new game{" "}
+              </Button>
             </Grid>
           </Box>
         )}
-
+        {gameState == 3 && <ChooseDifficulty />}
         <Grid
           container
           sx={{
