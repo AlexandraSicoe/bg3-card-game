@@ -18,7 +18,7 @@ function ChooseDifficulty() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        height: "100vh",
       }}
     >
       <Grid
@@ -28,7 +28,6 @@ function ChooseDifficulty() {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          width: "100vw",
         }}
       >
         {difficultyState == 0 && (
@@ -43,12 +42,12 @@ function ChooseDifficulty() {
               borderRadius: "25px",
               padding: "20px",
               height: "400px",
+              mr: "100px",
             }}
           >
             <Typography
               sx={{
-                width: "250px",
-                mr: "100px",
+                width: "350px",
                 color: "white",
               }}
             >
@@ -70,12 +69,12 @@ function ChooseDifficulty() {
               borderRadius: "25px",
               padding: "20px",
               height: "400px",
+              mr: "100px",
             }}
           >
             <Typography
               sx={{
-                width: "250px",
-                mr: "100px",
+                width: "350px",
                 color: "white",
                 textAlign: "center",
               }}
@@ -98,12 +97,12 @@ function ChooseDifficulty() {
               borderRadius: "25px",
               padding: "20px",
               height: "400px",
+              mr: "100px",
             }}
           >
             <Typography
               sx={{
-                width: "250px",
-                mr: "100px",
+                width: "350px",
                 color: "white",
                 textAlign: "center",
               }}
