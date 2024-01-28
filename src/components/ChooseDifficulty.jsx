@@ -5,8 +5,10 @@ import Badge3 from "../images/badge3.png";
 import BG1 from "../images/bg1.jpg";
 import BG2 from "../images/bg2.jpg";
 import BG3 from "../images/bg3.jpg";
-
 import { useState } from "react";
+import Data1 from "../helpers/cards.json";
+import Data2 from "../helpers/incubusDifficulty.json";
+import Data3 from "../helpers/abyssDifficulty.json";
 
 function ChooseDifficulty() {
   const [difficultyState, setDifficultyState] = useState(0);

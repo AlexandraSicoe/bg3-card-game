@@ -3,11 +3,9 @@ import { Box, Container, Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import ChooseDifficulty from "../components/ChooseDifficulty";
-
 import imageData from "../helpers/cards.json";
 import GrayLogo from "../images/logo2.png";
 import Logo from "../images/logo.png";
-
 import _ from "lodash";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
