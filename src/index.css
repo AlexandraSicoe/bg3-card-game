@@ -10,7 +10,7 @@
 }
 @font-face {
   font-family: "Quadrat";
-  src: url("./assets/Quadrat/Quadrat-demibold.ttf") format("opentype");
+  src: url("./assets/Quadrat/Quadrat-demibold.otf") format("opentype");
   /* Add other font-face properties as needed */
 }
 
