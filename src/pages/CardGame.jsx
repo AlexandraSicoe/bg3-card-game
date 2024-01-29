@@ -83,7 +83,7 @@ function CardGame() {
 
   useEffect(() => {
     const lsUserName = localStorage.getItem("username");
-    setLoginInput(lsUserName);
+    setLoginInput(lsUserName ? lsUserName : "");
     if (lsUserName) {
       setGameState(1);
     }
@@ -220,6 +220,7 @@ function CardGame() {
                     }}
                   ></TextField>
                   <div>
+                    {console.log(loginInput)}
                     <Button
                       sx={{
                         color: "white",
@@ -230,7 +231,8 @@ function CardGame() {
                         },
                         transition: "transform 0.4s ease, color 0.3s ease",
                         "&:hover": {
-                          transform: "scale(1.3)",
+                          transform:
+                            loginInput?.length == 0 ? "scale(1)" : "scale(1.3)",
                         },
                       }}
                       size="md"
@@ -306,6 +308,38 @@ function CardGame() {
                   >
                     Ready to test your memory?
                   </Typography>
+                  <Box sx={{ display: "flex", justifyContent: "end" }}>
+                    <Typography level="h4" sx={{ color: "white", mr: "5px" }}>
+                      Not you?
+                    </Typography>
+                    <Button
+                      sx={{
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                        color: "white",
+                        fontFamily: "Quadrat",
+                        fontSize: "15px",
+                        overflow: "hidden",
+                        boxSizing: "border-box",
+                        "& .MuiInput-underline": {
+                          fontFamily: "Quadrat",
+                        },
+                        transition: "transform 0.4s ease, color 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.2)",
+                          backgroundColor: "transparent",
+                        },
+                      }}
+                      size="md"
+                      onClick={() => {
+                        setLoginInput("");
+                        localStorage.clear();
+                        setGameState(0);
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </Box>
                 </Box>
               </Grid>
               <Grid p={3} container>
