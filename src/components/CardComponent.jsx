@@ -7,6 +7,7 @@ import "../CardGame.css";
 
 function CardComponent({ cardData, isSelected, onClick }) {
   const { id, imageUrl } = cardData;
+
   const defaultImageUrl =
     "https://assets.mycast.io/posters/baldur-s-gate-3-fan-casting-poster-389892-large.jpg?1697159724";
 

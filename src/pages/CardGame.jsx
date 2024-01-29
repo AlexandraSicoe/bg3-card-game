@@ -3,12 +3,14 @@ import { Box, Container, Grid, Typography } from "@mui/joy";
 import BackgroundImage from "../images/wallpaper.jpg";
 import CardComponent from "../components/CardComponent";
 import ChooseDifficulty from "../components/ChooseDifficulty";
-import imageData from "../helpers/cards.json";
 import GrayLogo from "../images/logo2.png";
 import Logo from "../images/logo.png";
 import _ from "lodash";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import imageData from "../helpers/cards.json";
+import imageData2 from "../helpers/incubusDifficulty.json";
+import imageData3 from "../helpers/abyssDifficulty.json";
 
 function CardGame() {
   const [shuffledData, setShuffledData] = useState([]);
@@ -96,7 +98,27 @@ function CardGame() {
     });
     setSelectedCards(clonedSelectedCards);
   }, []);
+  const setDifficulty = (difficulty) => {
+    // let pairedCards = imageData.cards.concat(imageData.cards);
+    let pairedCards;
+    if (difficulty == 1) {
+      pairedCards = imageData.cards.concat(imageData.cards);
+    }
+    if (difficulty == 2) {
+      pairedCards = imageData2.cards.concat(imageData2.cards);
+    }
+    if (difficulty == 3) {
+      pairedCards = imageData3.cards.concat(imageData3.cards);
+    }
+    shuffleArray(pairedCards);
+    setShuffledData(pairedCards);
 
+    const clonedSelectedCards = [];
+    pairedCards.forEach(() => {
+      clonedSelectedCards.push(false);
+    });
+    setSelectedCards(clonedSelectedCards);
+  };
   return (
     <>
       <Box
@@ -424,7 +446,12 @@ function CardGame() {
             </Grid>
           </Box>
         )}
-        {gameState == 3 && <ChooseDifficulty />}
+        {gameState == 3 && (
+          <ChooseDifficulty
+            setDifficulty={setDifficulty}
+            setGameState={setGameState}
+          />
+        )}
         <Grid
           container
           sx={{
