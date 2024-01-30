@@ -20,6 +20,53 @@ function CardGame() {
   const [gameState, setGameState] = useState(0);
   const [historyCardClick, setHistoryCardClick] = useState([]);
   const [score, setScore] = useState(0);
+  const [startTime, setStartTime] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  const startTimer = () => {
+    setStartTime(Date.now()); // Set startTime to the current timestamp
+    setIsRunning(true); // Start the timer
+  };
+
+  // Function to stop the timer
+  const stopTimer = () => {
+    setIsRunning(false); // Pause the timer
+  };
+
+  // Update elapsedTime based on current time and startTime
+  useEffect(() => {
+    let timerInterval;
+
+    if (isRunning) {
+      // Start the timer interval
+      timerInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = Math.floor((now - startTime) / 1000); // Convert to seconds
+        setElapsedTime(elapsed);
+      }, 1000); // Update every second
+    } else {
+      clearInterval(timerInterval); // Clear the interval if timer is not running
+    }
+
+    return () => clearInterval(timerInterval); // Clean up the interval on component unmount or effect cleanup
+  }, [isRunning, startTime]);
+  useEffect(() => {
+    if (gameState === 1) {
+      startTimer(); // Start the timer when gameState changes to 1
+    } else {
+      setElapsedTime(0);
+      stopTimer(); // Stop the timer when gameState changes to a value other than 1
+    }
+  }, [gameState]);
+
+  const calculateScore = (elapsedTime) => {
+    // Example formula: score = 1000 - (elapsedTime * 10)
+    return 1000 - elapsedTime * 10;
+  };
+
+  // Usage:
+  // Calculate the score based on elapsedTime
 
   const handleCardClick = (index, id) => {
     if (selectedCards[index] == true) {
@@ -50,6 +97,11 @@ function CardGame() {
     });
     if (sum == selectedCards.length && selectedCards.length > 0) {
       setTimeout(() => {
+        const updatedScore = calculateScore(elapsedTime);
+
+        // Update the score state with the calculated score
+        setScore(updatedScore);
+
         setGameState(2);
       }, 1000);
     }
@@ -85,7 +137,7 @@ function CardGame() {
     const lsUserName = localStorage.getItem("username");
     setLoginInput(lsUserName ? lsUserName : "");
     if (lsUserName) {
-      setGameState(1);
+      setGameState(3);
     }
 
     let pairedCards = imageData.cards.concat(imageData.cards);
@@ -302,11 +354,19 @@ function CardGame() {
                     key to its magical mysteries.
                   </Typography>
 
+                  <Typography level="h4" sx={{ color: "white" }}>
+                    Ready to test your memory?
+                  </Typography>
+
                   <Typography
                     level="h3"
-                    sx={{ color: "white", paddingTop: "10px" }}
+                    sx={{ color: "white", paddingTop: "20px" }}
                   >
-                    Ready to test your memory?
+                    Elapsed Time: {elapsedTime} seconds
+                  </Typography>
+                  <Typography level="h4" sx={{ color: "white" }}>
+                    Note: The time in which you complete the level will affect
+                    your score. Good luck!
                   </Typography>
                   <Box sx={{ display: "flex", justifyContent: "end" }}>
                     <Typography level="h4" sx={{ color: "white", mr: "5px" }}>
@@ -394,6 +454,7 @@ function CardGame() {
                 size="md"
                 onClick={() => {
                   setGameState(3);
+                  stopTimer();
                 }}
               >
                 Change difficulty
@@ -435,7 +496,16 @@ function CardGame() {
               </Typography>
               <Button
                 onClick={() => {
-                  location.reload();
+                  let resetArray = _.cloneDeep(shuffledData);
+                  shuffleArray(resetArray);
+                  setShuffledData(resetArray);
+
+                  const clonedSelectedCards = [];
+                  resetArray.forEach(() => {
+                    clonedSelectedCards.push(false);
+                  });
+                  setSelectedCards(clonedSelectedCards);
+                  setGameState(1);
                 }}
                 sx={{
                   marginTop: "20px",
